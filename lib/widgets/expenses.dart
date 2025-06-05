@@ -1,7 +1,7 @@
 import 'package:expense_track/widgets/chart/chart.dart';
 import 'package:expense_track/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_track/models/expense.dart';
-import 'package:expense_track/widgets/new_expense.dart';
+import 'package:expense_track/widgets/new_expense/new_expense.dart';
 import 'package:flutter/material.dart';
 
 class Expenses extends StatefulWidget {
