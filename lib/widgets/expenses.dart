@@ -1,3 +1,4 @@
+import 'package:expense_track/widgets/chart/chart.dart';
 import 'package:expense_track/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_track/models/expense.dart';
 import 'package:expense_track/widgets/new_expense.dart';
@@ -31,6 +32,7 @@ class _Expenses extends State<Expenses> {
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
       isScrollControlled: true,
+      useSafeArea: true,
       context: context,
       builder: (ctx) => NewExpense(onAddExpense: _addNewExpenses),
     );
@@ -49,7 +51,9 @@ class _Expenses extends State<Expenses> {
       _registeredExpenses.remove(expense);
     });
 
-    ScaffoldMessenger.of(context).clearSnackBars(); //если удалть подрд чтоб убрать предыдущее собщение сразу
+    ScaffoldMessenger.of(
+      context,
+    ).clearSnackBars(); //если удалть подрд чтоб убрать предыдущее собщение сразу
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 3),
@@ -68,6 +72,8 @@ class _Expenses extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     Widget mainContent = const Center(child: Text('No expenses found'));
 
     if (_registeredExpenses.isNotEmpty) {
@@ -87,12 +93,20 @@ class _Expenses extends State<Expenses> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const Text('CHART'),
-          Expanded(child: mainContent),
-        ],
-      ),
+      body: width < 600
+          ? Column(
+              children: [
+                Chart(expenses: _registeredExpenses),
+                Expanded(child: mainContent),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: Chart(expenses: _registeredExpenses)),
+                Expanded(child: mainContent),
+              ],
+            ),
     );
   }
 }

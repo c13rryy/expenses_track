@@ -33,3 +33,23 @@ class Expense {
     return formatter.format(date);
   }
 }
+
+class ExpenseBucket {
+  const ExpenseBucket({required this.category, required this.expenses});
+
+  ExpenseBucket.forCategory(List<Expense> allExpense, this.category)
+    : expenses = allExpense.where((el) => el.category == category).toList();
+
+  final Category category;
+  final List<Expense> expenses;
+
+  double get totalExpenses {
+    double sum = 0;
+
+    for (final el in expenses) {
+      sum += el.amount;
+    }
+
+    return sum;
+  }
+}
